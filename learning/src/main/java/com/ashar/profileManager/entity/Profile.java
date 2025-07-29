@@ -1,9 +1,8 @@
 package com.ashar.profileManager.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -21,4 +20,10 @@ public class Profile {
     private String profilePicUrl;
     private String bio;
     private Date dateOfBirth;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",nullable = false)
+    @JsonBackReference
+    private User user;
+
 }

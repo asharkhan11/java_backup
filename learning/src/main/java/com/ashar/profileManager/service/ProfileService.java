@@ -1,6 +1,7 @@
 package com.ashar.profileManager.service;
 
 import com.ashar.profileManager.entity.Profile;
+import com.ashar.profileManager.exception.ProfileNotFoundException;
 import com.ashar.profileManager.exception.ResourceAlreadyExists;
 import com.ashar.profileManager.exception.ResourceNotFoundException;
 import com.ashar.profileManager.repository.ProfileRepository;
@@ -45,6 +46,7 @@ public class ProfileService {
     public ResponseEntity<Profile> updateProfileById(int id, Profile profile) {
         log.info("inside ProfileService, updating profile having id : {} and profile : {}",id,profile);
         Optional<Profile> p = profileRepository.findById(id);
+
         if(p.isEmpty()) throw new ResourceNotFoundException("profile not found for id : "+id);
         Profile oldProfile = p.get();
 

@@ -3,7 +3,6 @@ package com.ashar.profileManager.controller;
 import com.ashar.profileManager.entity.Profile;
 import com.ashar.profileManager.service.ProfileService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +21,12 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<Profile> addData(@RequestBody Profile profile){
+    public ResponseEntity<Profile> addProfile(@RequestBody Profile profile){
         log.info("creating profile");
         return profileService.addProfile(profile);
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/profile/all")
     public ResponseEntity<List<Profile>> getAllProfiles(){
         log.info("getting all profiles");
         return profileService.getAllProfiles();
@@ -38,6 +37,7 @@ public class ProfileController {
         log.info("getting profile by id : {}",id);
         return profileService.getProfileById(id);
     }
+
 
     @PutMapping("/profile/{id}")
     public ResponseEntity<Profile> updateProfileById(@PathVariable int id, @RequestBody Profile profile){
