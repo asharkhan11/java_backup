@@ -23,9 +23,7 @@ public class UserController {
         return userService.addUser(user);
     }
 
-
-
-    @GetMapping("/user")
+    @GetMapping("/user/all")
     public ResponseEntity<Response<List<User>>> getAllUsers(){
         return userService.getAllUsers();
     }
@@ -35,7 +33,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/userByName/{name}")
+    @GetMapping("/user/name/{name}")
     public ResponseEntity<Response<User>> getUserByName(@PathVariable String name){
         return userService.getUserByName(name);
     }
@@ -51,8 +49,9 @@ public class UserController {
     }
 
     @PostMapping("/addAll")
-    public ResponseEntity<List<User>> addAllUsers(@RequestBody List<User>list)
+    public ResponseEntity<Response<List<User>>> addAllUsers(@RequestBody List<User> users)
     {
-        return ResponseEntity.ok(userService.addAllUsers(list));
+        return userService.addAllUsers(users);
     }
+
 }

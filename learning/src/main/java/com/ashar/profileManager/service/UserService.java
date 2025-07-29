@@ -46,7 +46,7 @@ public class UserService {
         if (users.isEmpty()) throw new ResourceNotFoundException("No users in database");
 
         log.info("fetched all users from database");
-        response.setResponse("success");
+        response.setResponse("fetched");
         response.setMessage("All users fetched successfully");
         response.setObject(users);
 
@@ -58,7 +58,7 @@ public class UserService {
         if(user.isEmpty()) throw new ResourceNotFoundException("user not found for id : "+id);
 
         log.info("user fetched from database : {}",user.get());
-        response.setResponse("success");
+        response.setResponse("fetched");
         response.setMessage("user fetched successfully");
         response.setObject(user.get());
 
@@ -70,7 +70,7 @@ public class UserService {
         if(user.isEmpty()) throw new ResourceNotFoundException("user not found for username : "+name);
 
         log.info("user fetched from database : {}",user.get());
-        response.setResponse("success");
+        response.setResponse("fetched");
         response.setMessage("user fetched successfully");
         response.setObject(user.get());
 
@@ -111,9 +111,13 @@ public class UserService {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public List<User> addAllUsers(List<User>list)
+    public ResponseEntity<Response<List<User>>> addAllUsers(List<User> users)
     {
-        return userRepository.saveAll(list);
+        List<User> saved = userRepository.saveAll(users);
+        response.setResponse("created");
+        response.setMessage("all users created successfully");
+        response.setObject(saved);
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
 
