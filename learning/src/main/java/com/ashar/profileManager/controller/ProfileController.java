@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -47,23 +45,20 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/name/{name}")
-    public ResponseEntity<Profile> getProfileByName(@PathVariable String name){
+    public ResponseEntity<Profile> getProfileByUsername(@PathVariable String name){
         log.info("getting profile by name : {}",name);
-        return profileService.getProfileByName(name);
+        return profileService.getProfileByUsername(name);
     }
-
-//    @GetMapping("/profile/dob/{dob}")
-//    public ResponseEntity<Profile> getProfileByDOB(@PathVariable String dob){
-//        LocalDate date = LocalDate.parse(dob);
-//
-//        log.info("getting profile by DOB : {}",dob);
-//        return profileService.getProfileByDOB();
-//    }
 
 
     @PutMapping("/profile/{id}")
     public ResponseEntity<Profile> updateProfileById(@PathVariable int id, @RequestBody Profile profile){
         return profileService.updateProfileById(id,profile);
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<Integer> updateUsernameAndPassword(@RequestParam int id, @RequestParam String username, @RequestParam String password){
+        return profileService.updateUsernameAndPasswordById(id,username,password);
     }
 
     @DeleteMapping("/profile/{id}")

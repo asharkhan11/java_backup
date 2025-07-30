@@ -1,7 +1,6 @@
 package com.ashar.profileManager.service;
 
 import com.ashar.profileManager.entity.Profile;
-import com.ashar.profileManager.exception.ProfileNotFoundException;
 import com.ashar.profileManager.exception.ResourceAlreadyExists;
 import com.ashar.profileManager.exception.ResourceNotFoundException;
 import com.ashar.profileManager.repository.ProfileRepository;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,20 +47,13 @@ public class ProfileService {
         return new ResponseEntity<>(profile.get(), HttpStatus.OK);
     }
 
-    public ResponseEntity<Profile> getProfileByName(String name) {
+    public ResponseEntity<Profile> getProfileByUsername(String name) {
         log.info("inside ProfileService, getting profile having name : {}",name);
-        Optional<Profile> profile = profileRepository.findByName(name);
+        Optional<Profile> profile = profileRepository.findByUsername(name);
         if (profile.isEmpty()) throw new ResourceNotFoundException("no profile found for name : "+name);
 
         return new ResponseEntity<>(profile.get(),HttpStatus.OK);
     }
-
-//    public ResponseEntity<Profile> getProfileByDOB(Date dob) {
-//        Optional<Profile> profile = profileRepository.findByDateOfBirth(dob);
-//        if(profile.isEmpty()) throw new ResourceNotFoundException("no profile found for date of birth : "+dob.toString());
-//
-//        return new ResponseEntity<>(profile.get(),HttpStatus.OK);
-//    }
 
     public ResponseEntity<Profile> updateProfileById(int id, Profile profile) {
         log.info("inside ProfileService, updating profile having id : {} and profile : {}",id,profile);
@@ -71,8 +62,8 @@ public class ProfileService {
         if(p.isEmpty()) throw new ResourceNotFoundException("profile not found for id : "+id);
         Profile oldProfile = p.get();
 
-        if(profile.getName() != null && !profile.getName().isEmpty()){
-            oldProfile.setName(profile.getName());
+        if(profile.getUsername() != null && !profile.getUsername().isEmpty()){
+            oldProfile.setUsername(profile.getUsername());
         }
         if(profile.getProfilePicUrl() != null){
             oldProfile.setProfilePicUrl(profile.getProfilePicUrl());
@@ -80,12 +71,19 @@ public class ProfileService {
         if(profile.getBio() != null){
             oldProfile.setBio(profile.getBio());
         }
-        if(profile.getDateOfBirth() != null && !profile.getDateOfBirth().toString().isEmpty()){
-            oldProfile.setDateOfBirth(profile.getDateOfBirth());
+        if(profile.getPassword() != null && !profile.getPassword().isEmpty()){
+            oldProfile.setPassword(profile.getPassword());
         }
 
         Profile updatedProfile = profileRepository.save(oldProfile);
         return new ResponseEntity<>(updatedProfile,HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> updateUsernameAndPasswordById(int id, String username,String password){
+        int i = profileRepository.updateUsernameAndPasswordById(id, username, password);
+        if(i==0) throw new ResourceNotFoundException("user not founde for id : "+id);
+
+        return new ResponseEntity<>(i,HttpStatus.OK);
     }
 
     public ResponseEntity<Profile> deleteProfileById(int id) {

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,8 +27,9 @@ public class User {
     @SequenceGenerator(name = "seq_id", allocationSize = 20, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_id")
     private int id;
-    private String username;
-    private String password;
+    private String name;
+    private Date dateOfBirth;
+    private String address;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference

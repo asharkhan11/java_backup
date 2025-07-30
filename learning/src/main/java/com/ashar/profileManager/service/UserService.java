@@ -1,9 +1,6 @@
 package com.ashar.profileManager.service;
 
-import com.ashar.profileManager.constants.UserConstants;
-import com.ashar.profileManager.entity.Profile;
 import com.ashar.profileManager.entity.User;
-import com.ashar.profileManager.exception.ProfileNotFoundException;
 import com.ashar.profileManager.exception.ResourceAlreadyExists;
 import com.ashar.profileManager.exception.ResourceNotFoundException;
 import com.ashar.profileManager.repository.UserRepository;
@@ -27,7 +24,7 @@ public class UserService {
         this.response = response;
     }
 
-    public ResponseEntity<Response<User>> addUser(User user) {
+    public ResponseEntity<Response<User>> addUser(User user) throws ResourceAlreadyExists{
 
         Optional<User> u = userRepository.findById(user.getId());
         if(u.isPresent()) throw new ResourceAlreadyExists("user already exists for id : "+user.getId());
@@ -66,7 +63,7 @@ public class UserService {
     }
 
     public ResponseEntity<Response<User>> getUserByName(String name) {
-        Optional<User> user = userRepository.findByUsername(name);
+        Optional<User> user = userRepository.findByName(name);
         if(user.isEmpty()) throw new ResourceNotFoundException("user not found for username : "+name);
 
         log.info("user fetched from database : {}",user.get());
@@ -82,11 +79,14 @@ public class UserService {
         if(u.isEmpty()) throw new ResourceNotFoundException("user not found for id : "+id);
         User oldUser = u.get();
 
-        if(newUser.getUsername() != null && !newUser.getUsername().isEmpty() && !newUser.getUsername().equals(oldUser.getUsername())){
-            oldUser.setUsername(newUser.getUsername());
+        if(newUser.getName() != null && !newUser.getName().isEmpty() && !newUser.getName().equals(oldUser.getName())){
+            oldUser.setName(newUser.getName());
         }
-        if(newUser.getPassword() != null && !newUser.getPassword().isEmpty() && !newUser.getPassword().equals(oldUser.getPassword())){
-            oldUser.setPassword(newUser.getPassword());
+        if(newUser.getDateOfBirth() != null && !newUser.getDateOfBirth().equals(oldUser.getDateOfBirth())){
+            oldUser.setDateOfBirth(newUser.getDateOfBirth());
+        }
+        if(newUser.getAddress() != null && !newUser.getAddress().isEmpty() && !newUser.getAddress().equals(oldUser.getAddress())){
+            oldUser.setAddress(newUser.getAddress());
         }
 
         User savedUser = userRepository.save(oldUser);

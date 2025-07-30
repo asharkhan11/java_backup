@@ -2,9 +2,9 @@ package com.ashar.profileManager.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -16,10 +16,10 @@ public class Profile {
     @SequenceGenerator(name = "id", allocationSize = 20, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "id")
     private int id;
-    private String name;
+    private String username;
+    private String password;
     private String profilePicUrl;
     private String bio;
-    private Date dateOfBirth;
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
