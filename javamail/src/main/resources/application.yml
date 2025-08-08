@@ -1,0 +1,28 @@
+spring:
+  application.name: demo2
+
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: ashar
+    password: Ashark@007
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: b84ffba8595c0c
+    password: 4421e66832f43a
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+
+
+server.port: 9090
+

@@ -1,0 +1,58 @@
+[ {
+  "receiptId" : 0,
+  "clientName" : "dsdf",
+  "amount" : 2500,
+  "dateOfPurchase" : "2025-08-07T05:14:17.9315778Z"
+}, {
+  "receiptId" : 1,
+  "clientName" : "abc",
+  "amount" : 1200,
+  "dateOfPurchase" : "2025-08-07T05:14:51.5032226Z"
+}, {
+  "receiptId" : 2,
+  "clientName" : "abc",
+  "amount" : 2200,
+  "dateOfPurchase" : "2025-08-07T05:14:58.4453747Z"
+}, {
+  "receiptId" : 3,
+  "clientName" : "unknown",
+  "amount" : 500,
+  "dateOfPurchase" : "2025-08-07T06:25:30.9979093Z"
+}, {
+  "receiptId" : 4,
+  "clientName" : "jhon",
+  "amount" : 1901,
+  "dateOfPurchase" : "2025-08-07T06:29:36.5842468Z"
+}, {
+  "receiptId" : 5,
+  "clientName" : "jhon",
+  "amount" : 0,
+  "dateOfPurchase" : "2025-08-07T06:29:55.3989818Z"
+}, {
+  "receiptId" : 6,
+  "clientName" : "jhon",
+  "amount" : 0,
+  "dateOfPurchase" : "2025-08-07T06:30:42.587247Z"
+}, {
+  "receiptId" : 7,
+  "clientName" : "jhon",
+  "amount" : 1901,
+  "dateOfPurchase" : "2025-08-07T12:01:02.8312429+05:30"
+}, {
+  "receiptId" : 8,
+  "clientName" : "jhon",
+  "amount" : 1901,
+  "dateOfPurchase" : "2025-08-07T12:31:40.3959868+05:30"
+}, {
+  "clientName" : "unknown",
+  "amount" : 144,
+  "extra" : "thing",
+  "one" : "more",
+  "receiptId" : 9
+}, {
+  "clientName" : "unknown 2",
+  "amount" : 144,
+  "extra" : "thing",
+  "one" : "more",
+  "receiptId" : 10
+} ]

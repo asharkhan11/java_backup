@@ -1,0 +1,21 @@
+spring:
+  application.name: filehandling
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/files
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+
+
+  servlet:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 350MB
+
+server.port : 9090

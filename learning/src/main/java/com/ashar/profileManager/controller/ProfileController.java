@@ -1,7 +1,10 @@
 package com.ashar.profileManager.controller;
 
+import com.ashar.profileManager.dto.ProfileDto;
 import com.ashar.profileManager.entity.Profile;
 import com.ashar.profileManager.service.ProfileService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +23,17 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
+    @Operation(description = "It's returning Prifile Object",summary = "We are adding Profile Objects to database")
     @PostMapping("/profile")
-    public ResponseEntity<Profile> addProfile(@RequestBody Profile profile){
+    public ResponseEntity<Profile> addProfile(@RequestBody @Valid ProfileDto profileDto){
         log.info("creating profile");
-        return profileService.addProfile(profile);
+        return profileService.addProfile(profileDto);
     }
 
     @PostMapping("/profile/all")
-    public ResponseEntity<List<Profile>> addAllProfiles(@RequestBody List<Profile> profiles){
+    public ResponseEntity<List<Profile>> addAllProfiles(@RequestBody List< @Valid ProfileDto> profileDtos){
         log.info("creating all profiles");
-        return profileService.addAllProfiles(profiles);
+        return profileService.addAllProfiles(profileDtos);
     }
 
     @GetMapping("/profile/all")
@@ -52,8 +56,8 @@ public class ProfileController {
 
 
     @PutMapping("/profile/{id}")
-    public ResponseEntity<Profile> updateProfileById(@PathVariable int id, @RequestBody Profile profile){
-        return profileService.updateProfileById(id,profile);
+    public ResponseEntity<Profile> updateProfileById(@PathVariable int id, @RequestBody @Valid ProfileDto profileDto){
+        return profileService.updateProfileById(id,profileDto);
     }
 
     @PutMapping("/profile")

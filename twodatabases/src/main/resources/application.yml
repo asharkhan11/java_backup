@@ -1,0 +1,20 @@
+spring :
+  application.name: twodatabases
+
+  datasource:
+    mysql:
+      url: jdbc:mysql://localhost:3306/ashar
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+    oracle:
+      url: jdbc:oracle:thin:@localhost:1521:xe
+      username: ashar
+      password: Ashark@007
+      driver-class-name: oracle.jdbc.OracleDriver
+
+#  main:
+#    allow-bean-definition-overriding: true
+
+server.port : 9090

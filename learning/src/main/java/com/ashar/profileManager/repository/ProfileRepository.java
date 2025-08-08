@@ -26,7 +26,7 @@ public interface ProfileRepository extends JpaRepository<Profile,Integer> {
 
     @Modifying
     @Transactional
-    @Query("update Profile p set p.username = :name, p.password = :password where p.id = :id")
+    @Query(value = "update Profile p set p.username = :name, p.password = :password where p.id = :id")
     int updateUsernameAndPasswordById(int id,String name,String password);
 
 }

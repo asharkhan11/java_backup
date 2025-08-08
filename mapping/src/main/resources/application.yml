@@ -1,0 +1,13 @@
+spring :
+  application.name: mapping
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: ashar
+    password: Ashark@007
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server.port : 9090

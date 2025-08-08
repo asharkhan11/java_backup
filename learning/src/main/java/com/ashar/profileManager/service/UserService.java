@@ -1,14 +1,16 @@
 package com.ashar.profileManager.service;
 
+import com.ashar.profileManager.dto.UserDto;
 import com.ashar.profileManager.entity.User;
-import com.ashar.profileManager.exception.ResourceAlreadyExists;
 import com.ashar.profileManager.exception.ResourceNotFoundException;
 import com.ashar.profileManager.repository.UserRepository;
+import com.ashar.profileManager.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +21,19 @@ public class UserService {
     private final Response response;
     private final UserRepository userRepository;
 
+
     public UserService(UserRepository userRepository,Response response){
         this.userRepository = userRepository;
         this.response = response;
     }
 
-    public ResponseEntity<Response<User>> addUser(User user) throws ResourceAlreadyExists{
+    public ResponseEntity<Response<User>> addUser(UserDto userDto){
+        User user=new User();
 
-        Optional<User> u = userRepository.findById(user.getId());
-        if(u.isPresent()) throw new ResourceAlreadyExists("user already exists for id : "+user.getId());
+        log.info("current user Id : {}",user.getId());
+        user.setName(userDto.getName());
+        user.setAddress(userDto.getAddress());
+        user.setDateOfBirth(userDto.getDateOfBirth());
 
         User savedUser = userRepository.save(user);
         log.info("user created in database : {}",savedUser);
@@ -36,6 +42,26 @@ public class UserService {
         response.setObject(savedUser);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<Response<List<User>>> addAllUsers(List<UserDto> userDtos) {
+        List<User> list = new ArrayList<>();
+
+        User user = new User();
+
+        for(UserDto userDto: userDtos){
+            user.setName(userDto.getName());
+            user.setAddress(userDto.getAddress());
+            user.setDateOfBirth(userDto.getDateOfBirth());
+
+            User savedUser = userRepository.save(user);
+            list.add(savedUser);
+        }
+
+        response.setResponse("created");
+        response.setMessage("all users created successfully");
+        response.setObject(list);
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
     public ResponseEntity<Response<List<User>>> getAllUsers(){
@@ -74,19 +100,19 @@ public class UserService {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public ResponseEntity<Response<User>> updateUserById(int id, User newUser){
+    public ResponseEntity<Response<User>> updateUserById(int id, UserDto userDto){
         Optional<User> u = userRepository.findById(id);
         if(u.isEmpty()) throw new ResourceNotFoundException("user not found for id : "+id);
         User oldUser = u.get();
 
-        if(newUser.getName() != null && !newUser.getName().isEmpty() && !newUser.getName().equals(oldUser.getName())){
-            oldUser.setName(newUser.getName());
+        if(userDto.getName() != null && !userDto.getName().isEmpty() && !userDto.getName().equals(oldUser.getName())){
+            oldUser.setName(userDto.getName());
         }
-        if(newUser.getDateOfBirth() != null && !newUser.getDateOfBirth().equals(oldUser.getDateOfBirth())){
-            oldUser.setDateOfBirth(newUser.getDateOfBirth());
+        if(userDto.getDateOfBirth() != null && !userDto.getDateOfBirth().equals(oldUser.getDateOfBirth())){
+            oldUser.setDateOfBirth(userDto.getDateOfBirth());
         }
-        if(newUser.getAddress() != null && !newUser.getAddress().isEmpty() && !newUser.getAddress().equals(oldUser.getAddress())){
-            oldUser.setAddress(newUser.getAddress());
+        if(userDto.getAddress() != null && !userDto.getAddress().isEmpty() && !userDto.getAddress().equals(oldUser.getAddress())){
+            oldUser.setAddress(userDto.getAddress());
         }
 
         User savedUser = userRepository.save(oldUser);
@@ -109,15 +135,6 @@ public class UserService {
         response.setObject(user.get());
 
         return new ResponseEntity<>(response,HttpStatus.OK);
-    }
-
-    public ResponseEntity<Response<List<User>>> addAllUsers(List<User> users)
-    {
-        List<User> saved = userRepository.saveAll(users);
-        response.setResponse("created");
-        response.setMessage("all users created successfully");
-        response.setObject(saved);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
 

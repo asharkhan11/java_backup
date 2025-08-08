@@ -10,15 +10,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+        @Index(name = "username_index",columnList = "username")
+})
 public class Profile {
 
     @Id
-    @SequenceGenerator(name = "id", allocationSize = 20, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "id")
+    @SequenceGenerator(name = "seq_profile_id", allocationSize = 20, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_profile_id")
     private int id;
+
+    @Column(/*nullable = false,*/ unique = true)
     private String username;
+
+//    @Column(nullable = false)
     private String password;
+
     private String profilePicUrl;
+
     private String bio;
 
     @ManyToOne

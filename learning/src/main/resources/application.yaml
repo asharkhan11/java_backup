@@ -1,6 +1,9 @@
+#spring boot and data jpa config
 spring:
   application:
     name: First Boot
+  config:
+    import: "classpath:variables.yml"
   datasource:
     url: jdbc:oracle:thin:@//localhost:1521/xe
     username: ashar
@@ -13,3 +16,15 @@ spring:
 
 server:
   port: 9090
+
+#swagger config
+
+springdoc.swagger-ui:
+  path: /api
+  layout: BaseLayout
+
+
+#actuators
+# Expose all actuator endpoints
+
+management.endpoints.web.exposure.include: "*"

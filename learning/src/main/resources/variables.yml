@@ -1,0 +1,16 @@
+#user generated properties/variables
+
+banking:
+  application:
+    details:
+      name: SBI
+      ifsc: SBI1234
+      branch: Police-Circle
+      city: Hyderabad
+      state: Telangana
+    account:
+      account-number: 290909031
+      balance: 909000
+
+environment:
+  ENV: PRODUCTION

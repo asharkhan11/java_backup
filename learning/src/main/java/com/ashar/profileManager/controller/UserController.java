@@ -1,8 +1,11 @@
 package com.ashar.profileManager.controller;
 
+import com.ashar.profileManager.dto.UserDto;
 import com.ashar.profileManager.entity.User;
-import com.ashar.profileManager.service.Response;
+import com.ashar.profileManager.response.Response;
 import com.ashar.profileManager.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user-manager")
+
 public class UserController {
 
     private final UserService userService;
@@ -20,13 +24,13 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<Response<User>> addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public ResponseEntity<Response<User>> addUser(@RequestBody UserDto userDto) {
+        return userService.addUser(userDto);
     }
 
     @PostMapping("/user/all")
-    public ResponseEntity<Response<List<User>>> addAllUsers(@RequestBody List<User> users) {
-        return userService.addAllUsers(users);
+    public ResponseEntity<Response<List<User>>> addAllUsers(@RequestBody @Size(min = 1) List< @Valid UserDto> userDtos) {
+        return userService.addAllUsers(userDtos);
     }
 
     @GetMapping("/user/all")
@@ -45,8 +49,8 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<Response<User>> updateUserById(@PathVariable int id, @RequestBody User user) {
-        return userService.updateUserById(id, user);
+    public ResponseEntity<Response<User>> updateUserById(@PathVariable int id, @RequestBody @Valid UserDto userDto) {
+        return userService.updateUserById(id, userDto);
     }
 
     @DeleteMapping("/user/{id}")
