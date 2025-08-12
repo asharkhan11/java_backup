@@ -46,7 +46,7 @@ public class FileService {
         }
     }
 
-    public ResponseEntity<byte[]> getFileFromDb(int id) {
+    public ResponseEntity<byte[]> readFile(int id) {
 
         Optional<FileData> oFile = fileRepository.findById(id);
 

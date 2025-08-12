@@ -30,7 +30,7 @@ public class FileInSystemService {
 
     public ResponseEntity<String> uploadLargeFile(MultipartFile file) {
         try {
-            if (Files.exists(uploadPath)) {
+            if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 

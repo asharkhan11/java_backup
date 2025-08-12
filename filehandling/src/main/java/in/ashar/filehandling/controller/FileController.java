@@ -26,7 +26,7 @@ public class FileController {
 
     @GetMapping("/db/{id}")
     public ResponseEntity<byte[]> readFile(@PathVariable("id") int id){
-        return fileService.getFileFromDb(id);
+        return fileService.readFile(id);
     }
 
     @PostMapping("/upload")
