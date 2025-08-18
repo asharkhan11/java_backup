@@ -1,9 +1,7 @@
-package in.ashar.filehandling;
+package in.ashar.filehandling.utility;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class FileOperations {
