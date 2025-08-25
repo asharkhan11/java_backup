@@ -17,5 +17,13 @@ spring:
       password: Ashark@007
       driver-class-name: oracle.jdbc.OracleDriver
 
+  servlet:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 350MB
+
+
 #web-server port
 server.port: 9090
+
+

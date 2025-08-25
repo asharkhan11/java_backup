@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: email-sender
+
+  config:
+    import: "classpath:secrets.yml"
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: asharkhan.eidiko@gmail.com
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+
+server:
+  port: 9090
