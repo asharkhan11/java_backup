@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: factory-bean
+
+server:
+  port: 9090

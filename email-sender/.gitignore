@@ -32,6 +32,3 @@ build/
 ### VS Code ###
 .vscode/
 
-### secrets ###
-!**/main/resources/secrets.yml
-!**/main/resources/app-password.txt

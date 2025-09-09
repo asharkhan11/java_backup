@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: second-level-cache
+
+
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1521/xe
+    username: ashar
+    password: Ashark@007
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: org.redisson.hibernate.RedissonRegionFactory
+          redisson:
+            config: "src/main/resources/redisson.yml"
+
+
+server:
+  port: 9090
