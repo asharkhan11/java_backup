@@ -3,6 +3,7 @@ package in.ashar.spring_security.utility;
 import in.ashar.spring_security.property.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Slf4j
@@ -21,12 +24,34 @@ public class JwtUtil {
     private JwtProperties jwtProperties;
 
     public String generateJwt(UserDetails userDetails){
+
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("type","active");
+        claims.put("role", userDetails.getAuthorities());
+
         return Jwts.builder()
                 .subject(userDetails.getUsername())
-                .claim("role",userDetails.getAuthorities())
+                .claims(claims)
                 .issuer(jwtProperties.getIssuer())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtProperties.getExpiry()))
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails userDetails){
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("type","inactive");
+        claims.put("role", userDetails.getAuthorities());
+
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .claims(claims)
+                .issuer(jwtProperties.getIssuer())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000*60*60*24*7)) //validity 7 days
                 .signWith(getSigningKey())
                 .compact();
     }
@@ -52,6 +77,10 @@ public class JwtUtil {
         Claims claims = extractAllClaims(token);
         return claimResolver.apply(claims);
 
+    }
+
+    public String extractType(String token){
+        return (String) extractClaim(token, claims -> claims.get("type"));
     }
 
     public String extractUsername(String token){

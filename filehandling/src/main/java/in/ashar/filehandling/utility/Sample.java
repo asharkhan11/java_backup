@@ -10,7 +10,6 @@ public class Sample {
 
         File file = new File("file1.txt");
 
-        file.
 
         try {
             boolean newFile = file.createNewFile();

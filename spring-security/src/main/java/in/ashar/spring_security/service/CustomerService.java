@@ -8,16 +8,14 @@ import in.ashar.spring_security.entity.Users;
 import in.ashar.spring_security.repository.BranchRepository;
 import in.ashar.spring_security.repository.CustomerRepository;
 import in.ashar.spring_security.repository.RolesRepository;
-import in.ashar.spring_security.repository.UserDetailsRepository;
+import in.ashar.spring_security.repository.UsersRepository;
 import in.ashar.spring_security.utility.Credentials;
 import in.ashar.spring_security.utility.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -28,7 +26,7 @@ public class CustomerService {
     @Autowired
     private BranchRepository branchRepository;
     @Autowired
-    private UserDetailsRepository userDetailsRepository;
+    private UsersRepository usersRepository;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -52,7 +50,7 @@ public class CustomerService {
         user.getRoles().add(role);
         user.setRoles(user.getRoles());
 
-        userDetailsRepository.save(user);
+        usersRepository.save(user);
 
         return customerRepository.save(customer);
     }

@@ -8,7 +8,7 @@ import in.ashar.spring_security.entity.Users;
 import in.ashar.spring_security.repository.BranchRepository;
 import in.ashar.spring_security.repository.ManagerRepository;
 import in.ashar.spring_security.repository.RolesRepository;
-import in.ashar.spring_security.repository.UserDetailsRepository;
+import in.ashar.spring_security.repository.UsersRepository;
 import in.ashar.spring_security.utility.Credentials;
 import in.ashar.spring_security.utility.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class ManagerService {
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
-    private UserDetailsRepository userDetailsRepository;
+    private UsersRepository usersRepository;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -51,7 +51,7 @@ public class ManagerService {
         user.getRoles().add(role);
         user.setRoles(user.getRoles());
 
-        userDetailsRepository.save(user);
+        usersRepository.save(user);
         return managerRepository.save(manager);
     }
 

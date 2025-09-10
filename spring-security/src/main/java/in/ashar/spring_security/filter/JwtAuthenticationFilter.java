@@ -19,6 +19,7 @@ import java.io.IOException;
 @Service
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
@@ -41,17 +42,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     if (jwtUtil.validateJwt(token, userDetails)) {
 
-                        System.out.println("validated");
+                        String type = jwtUtil.extractType(token);
 
-                        UsernamePasswordAuthenticationToken authentication =
-                                new UsernamePasswordAuthenticationToken(
-                                        userDetails, null, userDetails.getAuthorities());
+                        if (type != null && type.equals("active")) {
 
-                        System.out.println("auth token created... : "+authentication.isAuthenticated());
-//                        authentication.setDetails(
-//                                new WebAuthenticationDetailsSource().buildDetails(request));
+                            System.out.println("validated");
 
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                            UsernamePasswordAuthenticationToken authentication =
+                                    new UsernamePasswordAuthenticationToken(
+                                            userDetails, null, userDetails.getAuthorities());
+
+                            System.out.println("auth token created... : " + authentication.isAuthenticated());
+                            authentication.setDetails(
+                                    new WebAuthenticationDetailsSource().buildDetails(request));
+
+                            SecurityContextHolder.getContext().setAuthentication(authentication);
+                        }
 
                     }
                 }
