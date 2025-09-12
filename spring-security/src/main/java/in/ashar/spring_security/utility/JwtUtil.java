@@ -1,16 +1,17 @@
 package in.ashar.spring_security.utility;
 
-import in.ashar.spring_security.property.JwtProperties;
+import in.ashar.spring_security.exception.UnAuthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,11 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("type","active");
-        claims.put("role", userDetails.getAuthorities());
+        claims.put("role", userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList()
+        );
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
@@ -44,7 +49,11 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("type","inactive");
-        claims.put("role", userDetails.getAuthorities());
+        claims.put("role", userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList()
+        );
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
@@ -76,7 +85,6 @@ public class JwtUtil {
     public <T> T extractClaim(String token, Function<Claims,T> claimResolver){
         Claims claims = extractAllClaims(token);
         return claimResolver.apply(claims);
-
     }
 
     public String extractType(String token){

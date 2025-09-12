@@ -1,43 +1,42 @@
 package in.ashar.spring_security.service;
 
-import in.ashar.spring_security.entity.Users;
+import in.ashar.spring_security.entity.Credential;
+import in.ashar.spring_security.entity.Roles;
+import in.ashar.spring_security.repository.CredentialRepository;
 import in.ashar.spring_security.repository.RolesRepository;
-import in.ashar.spring_security.repository.UsersRepository;
-import in.ashar.spring_security.utility.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
-@Component
-public class CustomInitializer {
+@Service
+public class CustomInitializer implements CommandLineRunner {
+
     @Autowired
     private RolesRepository rolesRepository;
+    @Autowired
+    private CredentialRepository credentialRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @Bean
-    public CommandLineRunner initializeUser(UsersRepository usersRepository, PasswordEncoder passwordEncoder){
+    @Override
+    public void run(String... args) throws Exception {
 
-        return args -> {
+        if(!credentialRepository.existsByUsername("ashar")) {
 
-            Roles[] roles = Roles.values();
-            List<in.ashar.spring_security.entity.Roles> rolesList = new ArrayList<>();
+            Roles role = new Roles("ADMIN");
+            Credential credential = new Credential();
+            credential.setUsername("ashar");
+            credential.setPassword(passwordEncoder.encode("root"));
+            credential.setRoles(new HashSet<>(List.of(role)));
 
-            for (Roles role : roles) {
-                if(!rolesRepository.existsByRole(role.name())){
-                    rolesList.add(new in.ashar.spring_security.entity.Roles(role.name()));
-                }
-            }
-
-            rolesRepository.saveAll(rolesList);
-            System.out.println("roles created : "+rolesList);
-        };
-
-
+            rolesRepository.save(role);
+            credentialRepository.save(credential);
+        }
+        System.out.println("admin created..");
     }
-
 }

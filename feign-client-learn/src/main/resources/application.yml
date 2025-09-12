@@ -1,6 +1,7 @@
 spring:
   application:
-    name: spring-security
+    name: Feign Client App
+
 
   datasource:
     url: jdbc:mysql://localhost:3306/bank
@@ -13,21 +14,17 @@ spring:
       ddl-auto: update
     show-sql: true
 
-#  security:
-#    user:
-#      name: ashar
-#      password: root
-#      roles: USER
-
-
 server:
-  port: 9090
+  port: 9091
 
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+
 
 jwt:
   secret-key: "BmoD/XUVKSxA5z2JNhrdiDl/1tF6N5QpLWPgVmO0RAE="

@@ -2,15 +2,19 @@ package in.ashar.spring_security.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import in.ashar.spring_security.dto.AuthResponse;
-import in.ashar.spring_security.dto.UserDto;
-import in.ashar.spring_security.entity.Users;
+import in.ashar.spring_security.dto.CredentialDto;
+import in.ashar.spring_security.entity.Credential;
+import in.ashar.spring_security.entity.Roles;
+import in.ashar.spring_security.exception.AlreadyExistsException;
+import in.ashar.spring_security.exception.UnAuthenticatedException;
+import in.ashar.spring_security.exception.UnAuthorizedException;
 import in.ashar.spring_security.repository.RolesRepository;
-import in.ashar.spring_security.repository.UsersRepository;
+import in.ashar.spring_security.repository.CredentialRepository;
+import in.ashar.spring_security.service.CredentialService;
+import in.ashar.spring_security.utility.HelperClass;
 import in.ashar.spring_security.utility.JwtUtil;
-import in.ashar.spring_security.utility.Roles;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +24,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.HashSet;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -41,11 +38,13 @@ public class AuthController {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private UsersRepository usersRepository;
+    private CredentialRepository credentialRepository;
     @Autowired
     private RolesRepository rolesRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CredentialService credentialService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestHeader("username") String username, @RequestHeader("password") String password) {
@@ -56,7 +55,7 @@ public class AuthController {
         Authentication authenticated = authenticationManager.authenticate(authToken);
 
         if(!authenticated.isAuthenticated()){
-            throw new RuntimeException("UnAuthenticated...");
+            throw new UnAuthenticatedException("Authentication Failed");
         }
 
 
@@ -68,7 +67,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(jwt, refreshToken));
     }
 
-    @GetMapping("/access-token")
+    @GetMapping("/refresh")
     public ResponseEntity<AuthResponse> generateAccessToken(@RequestHeader("refresh-token") String refreshToken) {
 
         String userName = jwtUtil.extractUsername(refreshToken);
@@ -76,7 +75,7 @@ public class AuthController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
         if (!jwtUtil.validateJwt(refreshToken, userDetails)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new UnAuthorizedException("JWT validation Failed");
         }
 
         String jwt = jwtUtil.generateJwt(userDetails);
@@ -85,21 +84,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Users> register(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<CredentialDto> register(@RequestBody @Valid CredentialDto credentialDto) {
 
-        Set<in.ashar.spring_security.entity.Roles> roleSet = new HashSet<>();
-
-        for (Roles role : userDto.getRoles()) {
-            rolesRepository.findByRole(role.name()).ifPresent(roleSet::add);
-        }
-
-        Users user = new Users();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRoles(new HashSet<>(roleSet));
-
-        Users save = usersRepository.save(user);
-        return ResponseEntity.ok(save);
+        return ResponseEntity.ok(credentialService.createCredential(credentialDto));
 
     }
 

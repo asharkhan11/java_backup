@@ -1,8 +1,11 @@
 package in.ashar.spring_security.configuration;
 
+import in.ashar.spring_security.exception.AuthenticationExceptionHandler;
+import in.ashar.spring_security.exception.AuthorizationExceptionHandler;
 import in.ashar.spring_security.filter.JwtAuthenticationFilter;
 import in.ashar.spring_security.service.CustomUserDetailService;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -35,35 +39,16 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers("/auth/**").permitAll()
-                            .requestMatchers("/bank/**", "/branch/**", "/manager/**").hasRole("ADMIN")
-                            .requestMatchers("/customer/**").hasAnyRole("MANAGER", "EMPLOYEE")
+                            .requestMatchers("/auth/**","/jwt/**").permitAll()
+                            .requestMatchers("/role/**").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).exceptionHandling(e -> {
+                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(e -> {
                     e
-                            .authenticationEntryPoint(((request, response, authException) -> {
-                                response.setContentType("application/json");
-                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                                response.getWriter().write("""
-                                        {
-                                            "error":"Authentication Failed",
-                                            "detail": "%s"
-                                        }
-                                        """.formatted(authException.getMessage()));
-                            }))
-
-                            .accessDeniedHandler(((request, response, accessDeniedException) -> {
-                                response.setContentType("application/json");
-                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                                response.getWriter().write("""
-                                        {
-                                            "error": "%s"
-                                        }
-                                        """.formatted(accessDeniedException.getMessage()));
-                            }));
-
+                    .authenticationEntryPoint(new AuthenticationExceptionHandler())
+                    .accessDeniedHandler(new AuthorizationExceptionHandler());
                 })
                 .build();
     }

@@ -1,10 +1,9 @@
 package in.ashar.spring_security;
 
-import in.ashar.spring_security.property.JwtProperties;
+import in.ashar.spring_security.utility.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableConfigurationProperties(JwtProperties.class)
 @SpringBootApplication
