@@ -2,8 +2,7 @@ package in.ashar.feign_client_learn.security;
 
 
 import aj.org.objectweb.asm.TypeReference;
-import in.ashar.feign_client_learn.feignClient.SecurityClient;
-import in.ashar.feign_client_learn.utility.JwtUtil;
+
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

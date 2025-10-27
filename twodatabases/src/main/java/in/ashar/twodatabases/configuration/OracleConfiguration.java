@@ -63,7 +63,6 @@ public class OracleConfiguration {
     @Bean
     public PlatformTransactionManager oracleTransactionManager(@Qualifier("oracleEntityManager") LocalContainerEntityManagerFactoryBean entityManager){
         assert entityManager.getObject() != null;
-
         return new JpaTransactionManager((entityManager.getObject()));
     }
 

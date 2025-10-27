@@ -1,0 +1,13 @@
+
+
+CREATE TABLE oauth2_registered_client (
+    id VARCHAR(100) PRIMARY KEY,
+    client_id VARCHAR(100) UNIQUE NOT NULL,
+    client_secret VARCHAR(200) NOT NULL,
+    authentication_methods VARCHAR(500),
+    authorization_grant_types VARCHAR(500),
+    redirect_uris VARCHAR(1000),
+    scopes VARCHAR(500),
+    client_settings VARCHAR(2000),
+    token_settings VARCHAR(2000)
+);

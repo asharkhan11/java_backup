@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -21,11 +23,21 @@ public class ReceiptService {
         return fakeDb.save(receipt);
     }
 
-    public List<Object> getAllReceipts(){
+    public List<Object> getAllReceipts() {
         return fakeDb.findAll();
     }
 
     public String addReceipt(JsonNode jsonNode) {
         return fakeDb.save(jsonNode);
     }
+
+
+    public void anyMethod() {
+
+        Thread mythread = new Thread();
+
+
+    }
+
+
 }

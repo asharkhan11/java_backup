@@ -16,7 +16,7 @@ public class FileData {
     private int id;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+//    @Column(columnDefinition = "LONGBLOB")
     private byte[] file;
     private String contentType;
 

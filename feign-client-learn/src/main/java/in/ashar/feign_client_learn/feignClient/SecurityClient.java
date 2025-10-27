@@ -6,9 +6,6 @@ import in.ashar.feign_client_learn.dto.RoleDto;
 import in.ashar.feign_client_learn.dto.UpdateRoleDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,6 +1,7 @@
 package in.ashar.pdf.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,21 @@ public class ExcelService {
 
     public String readExcel(InputStream in) throws IOException {
 
+
         StringBuilder sb = new StringBuilder();
 
         Workbook workbook = WorkbookFactory.create(in);
 
+
+
         Sheet sheet = workbook.getSheetAt(0);
+
         Iterator<Row> ri = sheet.rowIterator();
 
         while (ri.hasNext()){
 
             Iterator<Cell> ci = ri.next().cellIterator();
+
             while (ci.hasNext()){
 
                 Cell cell = ci.next();

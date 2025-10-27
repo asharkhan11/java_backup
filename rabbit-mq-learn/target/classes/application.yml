@@ -1,0 +1,15 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: rabbit-mq-learn
+
+
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ashar
+    password: root
+

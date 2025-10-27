@@ -1,0 +1,21 @@
+server:
+  port: 9090
+
+
+spring:
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
+            scope:
+              - openid
+              - profile
+              - email
+
+  application:
+    name: oAuthLearn
+

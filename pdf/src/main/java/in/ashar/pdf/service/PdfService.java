@@ -4,6 +4,7 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
@@ -18,10 +19,14 @@ public class PdfService {
 
         try (PDDocument document = PDDocument.load(in)) {
 
+
             PDFRenderer renderer = new PDFRenderer(document);
+
             Tesseract tesseract = new Tesseract();
             tesseract.setDatapath("C:\\Program Files\\Tesseract-OCR\\tessdata-main");
             tesseract.setLanguage("eng");
+
+
 
             for (int i = 0; i < document.getNumberOfPages(); i++) {
                 BufferedImage image = renderer.renderImageWithDPI(i, 300);

@@ -39,7 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import java.awt.Rectangle;
 import java.io.IOException;
 
 @Slf4j

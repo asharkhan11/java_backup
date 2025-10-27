@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ReceiveMailService {
@@ -112,8 +113,8 @@ public class ReceiveMailService {
         return store.getFolder(folderToAccess);
     }
 
-    private List<MessageResponse> getResponse(Message[] messages) {
-        List<MessageResponse> responses = new ArrayList<>();
+    private List<MessageResponse> getResponse(Message[] messages){
+        List<MessageResponse> responses = Collections.synchronizedList(new ArrayList<>());
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
@@ -129,7 +130,14 @@ public class ReceiveMailService {
             });
         }
 
-        executorService.close();
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            executorService.close();
+        }
 
         return responses;
     }

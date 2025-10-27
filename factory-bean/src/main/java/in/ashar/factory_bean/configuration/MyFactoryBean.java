@@ -31,7 +31,7 @@ public class MyFactoryBean implements FactoryBean<A> {
 
     @Override
     public boolean isSingleton() {
-        return false;
+        return isSingleton;
     }
 
     public boolean setSingleton(boolean isSingleton){

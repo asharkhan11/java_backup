@@ -1,0 +1,20 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: authorization_server
+
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth_server
+    username: root
+    password: root
+    driver: com.mysql.jdbc.cj.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+
+
