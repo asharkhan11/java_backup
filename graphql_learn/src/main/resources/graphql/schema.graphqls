@@ -1,0 +1,30 @@
+
+enum Department {
+    HR, JAVA, IIB, APIC, MQ
+}
+
+input EmpInput {
+    id: ID
+    name: String!
+    dept: Department
+    joined: String
+}
+
+type Employee {
+    id: ID
+    name: String
+    dept: Department
+    joined: String
+}
+
+
+type Query {
+    getAll: [Employee!]!
+    getById(id: ID!): Employee
+}
+
+type Mutation {
+    create(employee: EmpInput): Employee
+    delete(id: ID!): Boolean
+}
+

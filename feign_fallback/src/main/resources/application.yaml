@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: feign_fallback
+
+
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
+server:
+  port : 9090
+
+
+logging:
+  level:
+    org.springframework.cloud.openfeign: TRACE
+    io.github.resilience4j: TRACE

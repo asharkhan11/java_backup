@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: graphql_learn
+
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/ashar
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 9090
